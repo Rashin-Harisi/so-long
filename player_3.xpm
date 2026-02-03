@@ -1,5 +1,5 @@
 /* XPM */
-static char *cf268fb730f24f87f1731522bee812e86hKObDZWEmGTAiaR[] = {
+static char *_4b566f5ca4c4e72d2ebe4f2842b33faDtGKtp36GlR1Fmd6[] = {
 /* columns rows colors chars-per-pixel */
 "32 32 8 1 ",
 "  c None",
@@ -11,7 +11,6 @@ static char *cf268fb730f24f87f1731522bee812e86hKObDZWEmGTAiaR[] = {
 "@ c #FFCDA6",
 "# c gray84",
 /* pixels */
-"                                ",
 "                                ",
 "          ............          ",
 "          .OOOOOOOOOOO.         ",
@@ -28,19 +27,20 @@ static char *cf268fb730f24f87f1731522bee812e86hKObDZWEmGTAiaR[] = {
 "            ...@....            ",
 "               .##.             ",
 "              .#...             ",
-"             .##.o.             ",
-"             .##.o.             ",
-"           ..###.o.             ",
-"          .@@...oo.             ",
-"          .@@.ooo..             ",
-"           ......#.             ",
+"             .#.o..             ",
+"             .#.o..             ",
+"          ...#.oo..             ",
+"         .@@..oo.#.             ",
+"         .@@.oo.##.             ",
+"          .....###.             ",
 "            .#####.             ",
 "            .#####.             ",
 "             ......             ",
-"              X++X              ",
-"               X+X              ",
-"            XXXXXX              ",
-"           XXXXXXX              ",
+"          ..  X+++X             ",
+"          .....X++XX            ",
+"           ....+X+XXX           ",
+"             .XXXXXX            ",
+"             XXXXXX             ",
 "                                ",
 "                                "
 };
