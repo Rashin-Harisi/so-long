@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define TILE 32
 #define PLAYER_FRAMES 4
@@ -18,6 +19,9 @@ typedef struct s_game
     void *floor;
     void *player_frames[PLAYER_FRAMES];
     int current_frame;
+    int player_x;
+    int player_y;
+    int moves;
 } t_game;
 
 static int  slen(const char *s)
@@ -73,8 +77,7 @@ static void draw_map(t_game *g)
             else
                  mlx_put_image_to_window(g->mlx, g->win, g->green_wall, x * TILE, y * TILE);
         }
-        else if (g->map[i] == 'P')
-            mlx_put_image_to_window(g->mlx, g->win, g->player_frames[g->current_frame], x * TILE, y * TILE);
+        mlx_put_image_to_window(g->mlx, g->win, g->player_frames[g->current_frame], g->player_x * TILE, g->player_y * TILE);
 
         x++;
     }
@@ -93,9 +96,75 @@ int animate_player (void *param)
     return 0;
 }
 
+int handle_key(int keycode, void *params)
+{
+    t_game *g = (t_game *)params;
+    int new_x = g->player_x;
+    int new_y = g->player_y;
+
+    if (keycode == 65307) //ESC keycode
+    {
+        mlx_destroy_window(g->mlx, g->win);
+        free(g->map);
+        exit(0);
+    }
+    else if (keycode == 65362) //UP
+        new_y--;
+    else if (keycode == 65364) //DOWN
+        new_y++;
+    else if (keycode == 65361) //LEFT
+        new_x--;
+    else if (keycode == 65363) //RIGHT
+        new_x++;
+
+    if (new_x == g->player_x && new_y == g->player_y) //no movement
+        return (0);
+    if (g->map[new_y * (g->map_w + 1) + new_x] == '1') //wall encounter
+        return (0);
+    
+    g->player_x = new_x;
+    g->player_y = new_y;
+    g->moves++;
+    draw_map(g);
+    return (0);
+}
+
+int handle_close(void *params)
+{
+    t_game *g = (t_game *) params;
+    mlx_destroy_window(g->mlx , g->win);
+    free(g->map);
+    exit(0);
+    return(0);
+}
+void find_player_position(t_game *params)
+{
+    t_game *g = (t_game *)params;
+    int x = 0;
+    int y = 0;
+    
+    for( int i=0 ; g->map[i] ; i++)
+    {
+        if (g->map[i] == '\n')
+        {
+            y++;
+            x = 0;
+            continue;
+        }
+        if (g->map[i] == 'P')
+        {
+            g->player_x = x;
+            g->player_y = y;
+            return;
+        }
+        x++;
+    }
+}
+
 int main(void)
 {
     t_game g;
+    g.moves = 0;
     g.mlx = mlx_init();
     if (!g.mlx) return 1;
 
@@ -116,6 +185,8 @@ int main(void)
 
     g.map_w = width;
     g.map_h = height;
+    find_player_position(&g);
+    g.map[g.player_y * (g.map_w + 1) + g.player_x] = '0'; //omiting player from map
 
     g.win = mlx_new_window(g.mlx, width * TILE, height * TILE, "so_long map test");
     if (!g.win) return (free(g.map), 1);
@@ -135,15 +206,18 @@ int main(void)
     g.wall = mlx_xpm_file_to_image(g.mlx, "wall.xpm", &w, &h);
     g.green_wall = mlx_xpm_file_to_image(g.mlx,"green_wall.xpm", &w, &h);
     g.floor = mlx_xpm_file_to_image(g.mlx, "floor.xpm", &w, &h);
-    mlx_loop_hook(g.mlx, animate_player, &g);
     if (!g.wall || !g.green_wall || !g.floor || !g.player_frames[0] ||
         !g.player_frames[1] || !g.player_frames[2] || !g.player_frames[3])
         return (free(g.map), 1);
+        
+    mlx_loop_hook(g.mlx, animate_player, &g);
+    mlx_key_hook(g.win, handle_key, &g);
+    mlx_hook(g.win, 17, 0, handle_close, &g);
 
     draw_map(&g);
-
     mlx_loop(g.mlx);
     free(g.map);
+    printf("moves : %d\n", g.moves);
     return 0;
 }
 
