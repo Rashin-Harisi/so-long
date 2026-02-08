@@ -24,5 +24,4 @@ make fclean
 * <a href="https://harm-smits.github.io/42docs/libs/minilibx"> MinilibX Library </a>
 * <a href="https://chatgpt.com/"> ChatGpt </a>
 * <a href="https://42-cursus.gitbook.io/guide/2-rank-02/so_long" target="_blank"> So_Long Guide </a>
-* <a href="https://youtu.be/bYS93r6U0zg?si=RXUH9VSV0dk94uaq" target="_blank">
-Introduction to the minilibX : a simple X-Window programming API in C</a>
+* <a href="https://youtu.be/bYS93r6U0zg?si=RXUH9VSV0dk94uaq" target="_blank"> Introduction to the minilibX : a simple X-Window programming API in C</a>
