@@ -6,6 +6,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include "./gnl/get_next_line.h"
 
 # define TILE 32
 # define PLAYER_FRAMES 4
