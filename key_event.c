@@ -6,13 +6,10 @@ int handle_key(int keycode, void *params)
     t_game *g = (t_game *)params;
     int new_x = g->player_x;
     int new_y = g->player_y;
+    int index;
 
     if (keycode == 65307) //ESC keycode
-    {
-        mlx_destroy_window(g->mlx, g->win);
-        free(g->map);
-        exit(0);
-    }
+        return (handle_close(g), 0);
     else if (keycode == 65362 || keycode == 122) //UP
         new_y--;
     else if (keycode == 65364 || keycode == 115) //DOWN
@@ -24,9 +21,18 @@ int handle_key(int keycode, void *params)
 
     if (new_x == g->player_x && new_y == g->player_y) //no movement
         return (0);
-    if (g->map[new_y * (g->map_w + 1) + new_x] == '1') //wall encounter
+    if (new_x < 0 || new_y < 0 || new_x >= g->map_w || new_y >= g->map_h)
         return (0);
-    
+    index = new_y * (g->map_w + 1) + new_x;
+    if (g->map[index] == '1') //wall encounter
+        return (0);
+    if (g->map[index] == 'C')
+    {
+        g->collectibles--;
+        g->map[index] = '0';
+    }
+    if (new_x == g->exit_x && new_y == g->exit_y && g->collectibles == 0)
+            return (handle_close(g), 0);  
     g->player_x = new_x;
     g->player_y = new_y;
     g->moves++;

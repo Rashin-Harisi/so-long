@@ -14,7 +14,10 @@ void draw_map(t_game *g)
             x = 0;
             continue;
         }
-        mlx_put_image_to_window(g->mlx, g->win, g->floor, x * TILE, y * TILE);
+        if (g->map[i] == 'E' && g->collectibles == 0)
+            mlx_put_image_to_window(g->mlx, g->win, g->floor_exit, x * TILE, y * TILE);
+        else
+            mlx_put_image_to_window(g->mlx, g->win, g->floor, x * TILE, y * TILE);
 
         if (g->map[i] == '1')
         {
@@ -22,7 +25,9 @@ void draw_map(t_game *g)
                 mlx_put_image_to_window(g->mlx, g->win, g->wall, x * TILE, y * TILE);
             else
                  mlx_put_image_to_window(g->mlx, g->win, g->green_wall, x * TILE, y * TILE);
-        }        
+        }
+        if (g->map[i] == 'C')
+            mlx_put_image_to_window(g->mlx, g->win, g->collections, x * TILE , y *TILE);       
         x++;
     }
     mlx_put_image_to_window(g->mlx, g->win, g->player_frames[g->current_frame], g->player_x * TILE, g->player_y * TILE);

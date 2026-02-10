@@ -13,9 +13,8 @@ int animate_player (void *param)
     return 0;
 }
 
-void find_player_position(t_game *params)
+void find_player_position(t_game *g)
 {
-    t_game *g = (t_game *)params;
     int x = 0;
     int y = 0;
     

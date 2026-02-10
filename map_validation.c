@@ -1,39 +1,5 @@
 #include "so_long.h"
-
-static int check_length(char *line)
-{
-    int length;
-
-    if (!line)
-        return (-1);
-    if (line[0] == '\n')
-        return (-1);
-    length = ft_strlen(line);
-    if (length > 0 && line[length - 1] == '\n')
-        length--;
-    return (length);
-}
-//check all lines have equal length
-int is_length_equal(int fd)
-{
-    char *line;
-    int length_first_line;
-    int length_other;
-
-    line = get_next_line(fd);
-    length_first_line = check_length(line);
-    free(line);
-    if (length_first_line < 0)
-        return (0);
-    while (line = get_next_line(fd))
-    {
-        length_other = check_length(line);
-        free(line);
-        if (length_other <0 || length_first_line != length_other)
-            return (0);
-    }
-    return (1);
-}
+////////////////////helpers
 void free_array(char **lines)
 {
     int i;
@@ -46,10 +12,43 @@ void free_array(char **lines)
     }
     free(lines);
 }
-static int fail_handel(char **lines)
+
+int fail_handel(char **lines)
 {
     free_array(lines);
     return (0);
+}
+//check all lines have equal length
+int is_length_equal(char *map)
+{
+    char **lines;
+    int length_first_line;
+    int length_other;
+    int i;
+
+    if(!map || map[0] == '\n' || map[0] == '\0')
+        return (0);
+    i = 0;
+    while (map[i])
+    {
+        if (map[i] == '\n' && map [i + 1] == '\n')
+            return (0);
+        i++;
+    }
+    lines = ft_split(map, '\n');
+    if (!lines || !lines[0])
+        return (fail_handel(lines));
+    length_first_line = ft_strlen(lines[0]);
+    i = 1;
+    while (lines[i])
+    {
+        length_other = ft_strlen(lines[i]);
+        if (length_first_line != length_other)
+            return (fail_handel(lines));
+        i++;
+    }
+    free_array(lines);
+    return (1);
 }
 // check all walls are "1" character - it should check after checking length
 int is_map_rounded_closed(char *map, int map_h)
@@ -77,5 +76,36 @@ int is_map_rounded_closed(char *map, int map_h)
             return (fail_handel(lines));
     }
     free_array(lines);
+    return (1);
+}
+//////////////////////////////////////////////////////////
+int valid_characters(t_game *g)
+{
+    char *valid;
+    int i;
+    int counts[3]; //count_p, count_e, count_c
+
+    valid= "01CEP\n";
+    counts[0] = 0;
+    counts[1] = 0;
+    counts[2] = 0;
+    i = 0;
+    if (!g || !g->map)
+        return (0);
+    while (g->map[i])
+    {
+        if (ft_strchr(valid,g->map[i]) == NULL)
+            return (0);
+        if (g->map[i] == 'P')
+            counts[0]++;
+        else if (g->map[i] == 'E')
+            counts[1]++;
+        else if (g->map[i] == 'C')
+            counts[2]++;
+        i++;
+    }
+    if (counts[0] != 1 || counts[1] != 1 || counts[2] < 1)
+        return (0);
+    g->collectibles = counts[2];
     return (1);
 }

@@ -10,6 +10,8 @@ MANDATORY_SRC := main.c \
 				helper.c \
 				key_event.c \
 				player.c \
+				exitpoint.c \
+				map_validation.c \
 
 # put your bonus .c files inside bonus/ here (examples)
 
