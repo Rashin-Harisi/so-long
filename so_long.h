@@ -34,6 +34,15 @@ typedef struct s_game
     int collectibles;
 } t_game;
 
+typedef struct s_queue
+{
+    int *x;
+    int *y;
+    int head;
+    int tail;
+    int size;
+} t_queue;
+
 void draw_map(t_game *g);
 int handle_key(int keycode, void *params);
 void find_player_position(t_game *g);
