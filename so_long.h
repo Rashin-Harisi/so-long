@@ -32,6 +32,8 @@ typedef struct s_game
     int exit_x;
     int exit_y;
     int collectibles;
+    int reach_c;
+    int reach_e;
 } t_game;
 
 typedef struct s_queue
@@ -55,7 +57,12 @@ int fail_handel(char **lines);
 int is_length_equal(char *map);
 int is_map_rounded_closed(char *map, int map_h);
 int valid_characters(t_game *g);
-
-
+t_queue *queue_create(int max_size);
+int queue_push(t_queue *q, int x, int y);
+int queue_pop(t_queue *q, int *x, int *y);
+void queue_free(t_queue *q);
+int visit_tile(char *map, t_game *params, int x, int y);
+int check_neghbors(t_game *params, char *map, int x, int y);
+int valid_route(t_game *params);
 
 #endif

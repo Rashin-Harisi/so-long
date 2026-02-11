@@ -3,10 +3,12 @@
 
 int main(void)
 {
+    int w, h;
     t_game g;
     g.moves = 0;
     g.mlx = mlx_init();
     if (!g.mlx) return 1;
+    g.current_frame = 0;
 
     //////////////////////////////////reading map
     int fd = open("map.ber", O_RDONLY);
@@ -32,25 +34,34 @@ int main(void)
         free(g.map);
         return (ft_printf("Map is not valid\n"));
     }
+    ft_printf("Map has equal lemgth\n");
     if (is_map_rounded_closed(g.map , g.map_h) == 0)
     {
         free(g.map);
         return (ft_printf("Map is not valid\n"));
     }
+    ft_printf("Map is rounded by walls\n");
     if (valid_characters(&g) == 0)
     {
         free(g.map);
         return (ft_printf("Map is not valid\n"));
     }
-    ////////////////////////////////////
-    g.win = mlx_new_window(g.mlx, width * TILE, height * TILE, "so_long map test");
-    if (!g.win) return (free(g.map), 1);
+    ft_printf("Map has just valid characters\n");
     ///////////////////////////////////// exit point
     find_exit_point(&g);
-    ///////////////////////////////////// attaching characters
-    int w, h;
-    g.current_frame = 0;
+    ////////////////////////////////////playre_position
     find_player_position(&g);
+    ////////////////////////////////////////////////////
+    if (valid_route(&g) == 0)
+    {
+        free(g.map);
+        return (ft_printf("Map is not valid\n"));
+    }
+    ft_printf("All collections and exit point are reachable\n");
+    ////////////////////////////////////////////////
+    g.win = mlx_new_window(g.mlx, width * TILE, height * TILE, "so_long map test");
+    if (!g.win) return (free(g.map), 1);
+    ///////////////////////////////////// attaching characters
     g.map[g.player_y * (g.map_w + 1) + g.player_x] = '0'; //omiting player from map
     g.player_frames[0] = mlx_xpm_file_to_image(g.mlx,"texture and figure/player.xpm", &w, &h);
     if (w != TILE || h != TILE) return (free(g.map), 1);
