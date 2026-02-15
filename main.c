@@ -5,7 +5,7 @@ int main(void)
 {
     int w, h;
     t_game g;
-    g.moves = 0;
+    ft_bzero(&g, sizeof(t_game));
     g.mlx = mlx_init();
     if (!g.mlx) return 1;
     g.current_frame = 0;

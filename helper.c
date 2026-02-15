@@ -27,7 +27,17 @@ char *read_all(int fd)
 int handle_close(void *params)
 {
     t_game *g = (t_game *) params;
+    mlx_destroy_image(g->mlx, g->floor);
+    mlx_destroy_image(g->mlx, g->floor_exit);
+    mlx_destroy_image(g->mlx, g->wall);
+    mlx_destroy_image(g->mlx, g->green_wall);
+    mlx_destroy_image(g->mlx, g->collections);
+    mlx_destroy_image(g->mlx, g->player_frames[0]);
+    mlx_destroy_image(g->mlx, g->player_frames[1]);
+    mlx_destroy_image(g->mlx, g->player_frames[2]);
+    mlx_destroy_image(g->mlx, g->player_frames[3]);
     mlx_destroy_window(g->mlx , g->win);
+    mlx_destroy_display(g->mlx);
     free(g->map);
     exit(0);
     return(0);

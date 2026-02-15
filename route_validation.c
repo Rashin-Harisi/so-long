@@ -11,7 +11,7 @@ int visit_tile(char *map, t_game *params, int x, int y)
     if (map[index] == '1' || map[index] == 'V' ||
         map[index] == '\n' || map[index] == '\0')
         return (0);
-    if(map[index] == 'C')
+    if(map[index] == 'C') 
         params->reach_c++;
     else if (map[index] == 'E')
         params->reach_e = 1;
@@ -31,7 +31,8 @@ int check_neghbors(t_game *params, char *map, int x, int y)
     if (map [index] == '1' || map[index] == 'V' ||
         map [index] == '\n' || map[index] == '\0' || map[index] == 'Q')
             return (0);
-    map[index] = 'Q';
+    if (map[index] != 'C' && map[index] != 'E') 
+        map[index] = 'Q';
     return (1);
 }
 //FIFO = FIRST IN FIRST OUT
@@ -48,7 +49,7 @@ int valid_route(t_game *params)
     params->reach_e = 0;
     map = ft_strdup(params->map);
     if (!map)
-        return (0);   
+        return (0);
     q = queue_create(params->map_w * params->map_h);
     if (!q)
     {
@@ -63,6 +64,8 @@ int valid_route(t_game *params)
     }
     while(queue_pop(q,&x, &y))
     {
+        if (x < 0 || y < 0 || x >= params->map_w || y >= params->map_h)
+            continue;
         if (!visit_tile(map, params ,x , y))
             continue ;
         if (check_neghbors(params, map, x + 1, y) && !queue_push(q, x + 1, y))
@@ -74,8 +77,6 @@ int valid_route(t_game *params)
         if (check_neghbors(params, map, x, y - 1) && !queue_push(q, x, y - 1))
             return (queue_free(q), free(map), 0);
     }
-    ft_printf("DEBUG route: reach_c=%d collectibles=%d reach_e=%d\n",
-          params->reach_c, params->collectibles, params->reach_e);
     queue_free(q);
     free(map);
     if (params->reach_c != params->collectibles)
