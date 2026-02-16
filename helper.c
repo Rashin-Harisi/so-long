@@ -24,9 +24,27 @@ char *read_all(int fd)
     return out;
 }
 
+void movies_string(t_game *params)
+{
+    char *temp;
+    char *new_str;
+
+    temp = ft_itoa(params->moves);
+    if (!temp)
+        return;
+    new_str = ft_strjoin("MOVES: ", temp);
+    free(temp);
+    if (!new_str)
+        return;
+    free(params->moves_str);
+    params->moves_str = new_str;
+}
+
 int handle_close(void *params)
 {
     t_game *g = (t_game *) params;
+    free(g->moves_str);
+    g->moves_str = NULL;
     mlx_destroy_image(g->mlx, g->floor);
     mlx_destroy_image(g->mlx, g->floor_exit);
     mlx_destroy_image(g->mlx, g->wall);
@@ -39,6 +57,7 @@ int handle_close(void *params)
     mlx_destroy_window(g->mlx , g->win);
     mlx_destroy_display(g->mlx);
     free(g->map);
+    free(g->mlx);
     exit(0);
     return(0);
 }

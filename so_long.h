@@ -29,11 +29,15 @@ typedef struct s_game
     int player_x;
     int player_y;
     int moves;
+    char *moves_str;
     int exit_x;
     int exit_y;
     int collectibles;
     int reach_c;
     int reach_e;
+    void *enemy;
+    int enemy_x;
+    int enemy_y;
 } t_game;
 
 typedef struct s_queue
@@ -64,5 +68,7 @@ void queue_free(t_queue *q);
 int visit_tile(char *map, t_game *params, int x, int y);
 int check_neghbors(t_game *params, char *map, int x, int y);
 int valid_route(t_game *params);
+void movies_string(t_game *params);
+void find_enemy_position(t_game *g);
 
 #endif

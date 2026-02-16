@@ -12,6 +12,9 @@ MANDATORY_SRC := main.c \
 				player.c \
 				exitpoint.c \
 				map_validation.c \
+				fool_fill.c \
+				route_validation.c \
+				enemy.c
 
 # put your bonus .c files inside bonus/ here (examples)
 
@@ -23,7 +26,7 @@ MANDATORY_OBJ := $(MANDATORY_SRC:.c=.o)
 
 
 # -------- Compiler --------
-CC          := cc
+CC          := cc -g
 CFLAGS      := -Wall -Wextra -Werror
 
 # -------- Libft --------

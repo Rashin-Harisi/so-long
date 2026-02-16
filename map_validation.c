@@ -85,7 +85,7 @@ int valid_characters(t_game *g)
     int i;
     int counts[3]; //count_p, count_e, count_c
 
-    valid= "01CEP\n";
+    valid= "01CEPX\n";
     counts[0] = 0;
     counts[1] = 0;
     counts[2] = 0;

@@ -10,13 +10,13 @@ int handle_key(int keycode, void *params)
 
     if (keycode == 65307) //ESC keycode
         return (handle_close(g), 0);
-    else if (keycode == 65362 || keycode == 122) //UP
+    else if (keycode == 119 || keycode == 65362) //UP
         new_y--;
-    else if (keycode == 65364 || keycode == 115) //DOWN
+    else if (keycode == 115 || keycode == 65364) //DOWN
         new_y++;
-    else if (keycode == 65361 || keycode == 113) //LEFT
+    else if (keycode == 97 || keycode == 65361) //LEFT
         new_x--;
-    else if (keycode == 65363 || keycode == 100) //RIGHT
+    else if (keycode == 100 || keycode == 65363) //RIGHT
         new_x++;
 
     if (new_x == g->player_x && new_y == g->player_y) //no movement
@@ -36,6 +36,7 @@ int handle_key(int keycode, void *params)
     g->player_x = new_x;
     g->player_y = new_y;
     g->moves++;
+    movies_string(g);
     printf("moves : %d\n", g->moves);
     draw_map(g);
     return (0);

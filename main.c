@@ -6,9 +6,11 @@ int main(void)
     int w, h;
     t_game g;
     ft_bzero(&g, sizeof(t_game));
+    g.moves_str = NULL;
+    movies_string(&g);
     g.mlx = mlx_init();
     if (!g.mlx) return 1;
-    g.current_frame = 0;
+
 
     //////////////////////////////////reading map
     int fd = open("map.ber", O_RDONLY);
@@ -32,30 +34,32 @@ int main(void)
     if(is_length_equal(g.map) == 0)
     {
         free(g.map);
-        return (ft_printf("Map is not valid\n"));
+        return (ft_printf("Error\n"));
     }
     ft_printf("Map has equal lemgth\n");
     if (is_map_rounded_closed(g.map , g.map_h) == 0)
     {
         free(g.map);
-        return (ft_printf("Map is not valid\n"));
+        return (ft_printf("Error\n"));
     }
     ft_printf("Map is rounded by walls\n");
     if (valid_characters(&g) == 0)
     {
         free(g.map);
-        return (ft_printf("Map is not valid\n"));
+        return (ft_printf("Error\n"));
     }
     ft_printf("Map has just valid characters\n");
     ///////////////////////////////////// exit point
     find_exit_point(&g);
     ////////////////////////////////////playre_position
     find_player_position(&g);
+    find_enemy_position(&g);
+    printf("DEBUG ENEMY X and Y : %d , %d\n", g.enemy_x, g.enemy_y);
     ////////////////////////////////////////////////////
     if (valid_route(&g) == 0)
     {
         free(g.map);
-        return (ft_printf("Map is not valid\n"));
+        return (ft_printf("Error\n"));
     }
     ft_printf("All collections and exit point are reachable\n");
     ////////////////////////////////////////////////
@@ -76,9 +80,10 @@ int main(void)
     g.collections = mlx_xpm_file_to_image(g.mlx,"texture and figure/collections.xpm", &w, &h);
     g.floor = mlx_xpm_file_to_image(g.mlx, "texture and figure/floor.xpm", &w, &h);
     g.floor_exit = mlx_xpm_file_to_image(g.mlx, "texture and figure/exit_floor.xpm", &w, &h);
+    g.enemy = mlx_xpm_file_to_image(g.mlx, "texture and figure/enemy.xpm", &w, &h);
     if (!g.wall || !g.green_wall || !g.floor || !g.player_frames[0] ||
         !g.player_frames[1] || !g.player_frames[2] || !g.player_frames[3] ||
-        !g.collections || !g.floor_exit)
+        !g.collections || !g.floor_exit || !g.enemy)
         return (free(g.map), 1);
     /////////////////////////////////////// hooks and events    
     mlx_loop_hook(g.mlx, animate_player, &g);
@@ -87,6 +92,7 @@ int main(void)
     draw_map(&g);
     mlx_loop(g.mlx);
     free(g.map);
+    free(g.moves_str);
     return 0;
 }
 
