@@ -61,3 +61,11 @@ int handle_close(void *params)
     exit(0);
     return(0);
 }
+
+int loop_master(void *params)
+{
+    t_game *g = (t_game *)params;
+    animate_player(g);  
+    game_loop(g);
+    return (0);
+}

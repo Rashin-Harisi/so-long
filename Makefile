@@ -27,7 +27,7 @@ MANDATORY_OBJ := $(MANDATORY_SRC:.c=.o)
 
 # -------- Compiler --------
 CC          := cc -g
-CFLAGS      := -Wall -Wextra -Werror
+CFLAGS      := -Wall -Wextra -Werror -Wno-incompatible-pointer-types
 
 # -------- Libft --------
 LIBFT_DIR   := libft

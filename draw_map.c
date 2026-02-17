@@ -5,7 +5,7 @@ void draw_map(t_game *g)
 {
     int x = 0;
     int y = 0;
-    mlx_clear_window(g->mlx, g->win);
+    //mlx_clear_window(g->mlx, g->win);
     for (int i = 0; g->map[i]; i++)
     {
         if (g->map[i] == '\n')
@@ -28,11 +28,10 @@ void draw_map(t_game *g)
         }
         if (g->map[i] == 'C')
             mlx_put_image_to_window(g->mlx, g->win, g->collections, x * TILE , y *TILE);
-        if (g->map[i] == 'X')
-            mlx_put_image_to_window(g->mlx, g->win, g->enemy , x * TILE, y * TILE);
         x++;
     }
     mlx_put_image_to_window(g->mlx, g->win, g->player_frames[g->current_frame], g->player_x * TILE, g->player_y * TILE);
+    mlx_put_image_to_window(g->mlx, g->win, g->enemy , g->enemy_x * TILE, g->enemy_y * TILE);
     mlx_string_put(g->mlx, g->win, 10, 20 , 0xFFFFFF ,g->moves_str);
     mlx_string_put(g->mlx, g->win, 11, 20 , 0xFFFFFF ,g->moves_str);
     mlx_string_put(g->mlx, g->win, 10, 21 , 0xFFFFFF ,g->moves_str);

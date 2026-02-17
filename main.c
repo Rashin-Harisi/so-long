@@ -86,7 +86,7 @@ int main(void)
         !g.collections || !g.floor_exit || !g.enemy)
         return (free(g.map), 1);
     /////////////////////////////////////// hooks and events    
-    mlx_loop_hook(g.mlx, animate_player, &g);
+    mlx_loop_hook(g.mlx, loop_master, &g);
     mlx_key_hook(g.win, handle_key, &g);
     mlx_hook(g.win, 17, 0, handle_close, &g);
     draw_map(&g);

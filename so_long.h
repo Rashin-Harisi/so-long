@@ -1,16 +1,16 @@
 #ifndef SO_LONG
-# define SO_LONG
+#define SO_LONG
 
-# include "mlx.h"
-# include <fcntl.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-# include "libft/libft.h"
+#include "mlx.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "libft/libft.h"
+#include <sys/time.h>
 
-
-# define TILE 32
-# define PLAYER_FRAMES 4
+#define TILE 32
+#define PLAYER_FRAMES 4
 
 typedef struct s_game
 {
@@ -38,6 +38,7 @@ typedef struct s_game
     void *enemy;
     int enemy_x;
     int enemy_y;
+    long last_enemy_ms;
 } t_game;
 
 typedef struct s_queue
@@ -52,7 +53,7 @@ typedef struct s_queue
 void draw_map(t_game *g);
 int handle_key(int keycode, void *params);
 void find_player_position(t_game *g);
-int animate_player (void *param);
+int animate_player(void *param);
 char *read_all(int fd);
 int handle_close(void *params);
 void find_exit_point(t_game *g);
@@ -70,5 +71,11 @@ int check_neghbors(t_game *params, char *map, int x, int y);
 int valid_route(t_game *params);
 void movies_string(t_game *params);
 void find_enemy_position(t_game *g);
+int game_loop(t_game *params);
+int game_over(t_game *params);
+void update_enemy_location(t_game *params, int x, int y);
+int check_neghbors_enemy(t_game *params, int x, int y);
+long time_now(void);
+int loop_master(void *params);
 
 #endif
