@@ -3,6 +3,8 @@
 int animate_player (void *param)
 {
     t_game *game = (t_game *)param;
+    if (game->state != "RUNNING")
+        return (0);
     static int counter = 0;
     counter ++;
     if (counter % 50 == 0)

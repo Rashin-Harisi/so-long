@@ -65,7 +65,15 @@ int handle_close(void *params)
 int loop_master(void *params)
 {
     t_game *g = (t_game *)params;
-    animate_player(g);  
-    game_loop(g);
+    if (ft_strcmp(g->state, "RUNING") == 0)
+    {
+        animate_player(g);  
+        game_loop(g);
+        draw_map(g);
+    }
+    else
+    {
+        draw_last_window(g);
+    }
     return (0);
 }

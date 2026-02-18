@@ -7,11 +7,15 @@ int main(void)
     t_game g;
     ft_bzero(&g, sizeof(t_game));
     g.moves_str = NULL;
+    g.state = "RUNING";
     movies_string(&g);
     g.mlx = mlx_init();
     if (!g.mlx) return 1;
-
-
+    srand(time(NULL));
+    int w_lose;
+    int w_win;
+    int h_lose;
+    int h_win;
     //////////////////////////////////reading map
     int fd = open("map.ber", O_RDONLY);
     if (fd < 0) return 1;
@@ -54,7 +58,6 @@ int main(void)
     ////////////////////////////////////playre_position
     find_player_position(&g);
     find_enemy_position(&g);
-    printf("DEBUG ENEMY X and Y : %d , %d\n", g.enemy_x, g.enemy_y);
     ////////////////////////////////////////////////////
     if (valid_route(&g) == 0)
     {
@@ -81,15 +84,16 @@ int main(void)
     g.floor = mlx_xpm_file_to_image(g.mlx, "texture and figure/floor.xpm", &w, &h);
     g.floor_exit = mlx_xpm_file_to_image(g.mlx, "texture and figure/exit_floor.xpm", &w, &h);
     g.enemy = mlx_xpm_file_to_image(g.mlx, "texture and figure/enemy.xpm", &w, &h);
+    g.winer = mlx_xpm_file_to_image(g.mlx,"texture and figure/win.xpm",&w_win, &h_win);
+    g.loser = mlx_xpm_file_to_image(g.mlx, "texture and figure/lose.xpm",&w_lose, &h_lose);
     if (!g.wall || !g.green_wall || !g.floor || !g.player_frames[0] ||
         !g.player_frames[1] || !g.player_frames[2] || !g.player_frames[3] ||
-        !g.collections || !g.floor_exit || !g.enemy)
+        !g.collections || !g.floor_exit || !g.enemy || !g.winer || !g.loser)
         return (free(g.map), 1);
     /////////////////////////////////////// hooks and events    
     mlx_loop_hook(g.mlx, loop_master, &g);
     mlx_key_hook(g.win, handle_key, &g);
     mlx_hook(g.win, 17, 0, handle_close, &g);
-    draw_map(&g);
     mlx_loop(g.mlx);
     free(g.map);
     free(g.moves_str);

@@ -7,7 +7,8 @@ int handle_key(int keycode, void *params)
     int new_x = g->player_x;
     int new_y = g->player_y;
     int index;
-
+    if (ft_strcmp(g->state,"RUNING") != 0)
+        return (0);
     if (keycode == 65307) //ESC keycode
         return (handle_close(g), 0);
     else if (keycode == 119 || keycode == 65362) //UP
@@ -32,7 +33,12 @@ int handle_key(int keycode, void *params)
         g->map[index] = '0';
     }
     if (new_x == g->exit_x && new_y == g->exit_y && g->collectibles == 0)
-            return (handle_close(g), 0);  
+    {
+            g->state = "WIN";
+            g->end_time = time_now();
+            g->last_win = mlx_new_window(g->mlx, 700, 700 , "end");
+            if (!g->last_win) return (free(g->map), 1);
+    }
     g->player_x = new_x;
     g->player_y = new_y;
     g->moves++;

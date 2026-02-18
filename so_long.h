@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include "libft/libft.h"
 #include <sys/time.h>
+# include <limits.h>
+# include <math.h>
+# include <time.h>
 
 #define TILE 32
 #define PLAYER_FRAMES 4
@@ -39,6 +42,13 @@ typedef struct s_game
     int enemy_x;
     int enemy_y;
     long last_enemy_ms;
+    int prev_enemy_x;
+    int prev_enemy_y;
+    char *state;
+    long end_time;
+    void *winer;
+    void *loser;
+    void *last_win;
 } t_game;
 
 typedef struct s_queue
@@ -49,6 +59,12 @@ typedef struct s_queue
     int tail;
     int size;
 } t_queue;
+
+typedef struct s_neighbor
+{
+    int x;
+    int y;
+} t_neighbor;
 
 void draw_map(t_game *g);
 int handle_key(int keycode, void *params);
@@ -73,9 +89,10 @@ void movies_string(t_game *params);
 void find_enemy_position(t_game *g);
 int game_loop(t_game *params);
 int game_over(t_game *params);
-void update_enemy_location(t_game *params, int x, int y);
 int check_neghbors_enemy(t_game *params, int x, int y);
 long time_now(void);
 int loop_master(void *params);
+void update_enemy_location(t_game *params, t_neighbor n[], int count);
+void draw_last_window(void *params);
 
 #endif
