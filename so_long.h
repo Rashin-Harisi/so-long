@@ -49,6 +49,7 @@ typedef struct s_game
     void *winer;
     void *loser;
     void *last_win;
+    int needs_redraw;
 } t_game;
 
 typedef struct s_queue

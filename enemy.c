@@ -143,6 +143,7 @@ int game_loop(t_game *params)
         return (0);
     }
     params->last_enemy_ms = now;
+    params->needs_redraw = 1;
     // printf("enemy %d %d\n", params->enemy_x, params->enemy_y);
     return (0);
 }

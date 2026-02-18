@@ -54,7 +54,12 @@ int handle_close(void *params)
     mlx_destroy_image(g->mlx, g->player_frames[1]);
     mlx_destroy_image(g->mlx, g->player_frames[2]);
     mlx_destroy_image(g->mlx, g->player_frames[3]);
+    mlx_destroy_image(g->mlx, g->enemy);
+    mlx_destroy_image(g->mlx, g->winer);
+    mlx_destroy_image(g->mlx, g->loser);
     mlx_destroy_window(g->mlx , g->win);
+    if (g->last_win)
+        mlx_destroy_window(g->mlx , g->last_win);
     mlx_destroy_display(g->mlx);
     free(g->map);
     free(g->mlx);
@@ -69,7 +74,11 @@ int loop_master(void *params)
     {
         animate_player(g);  
         game_loop(g);
-        draw_map(g);
+        if (g->needs_redraw)
+        {
+            draw_map(g);
+            g->needs_redraw = 0;
+        }
     }
     else
     {

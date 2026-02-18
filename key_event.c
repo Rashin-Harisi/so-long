@@ -40,11 +40,20 @@ int handle_key(int keycode, void *params)
                 g->last_win = mlx_new_window(g->mlx, 300, 300 , "end");
             return (0);
     }
+    if (new_x == g->enemy_x && new_y == g->enemy_y)
+    {
+        g->state = "LOSE";
+        g->end_time = time_now();
+        if (!g->last_win)
+            g->last_win = mlx_new_window(g->mlx, 300, 300 , "end");
+        return (0);
+    }
     g->player_x = new_x;
     g->player_y = new_y;
     g->moves++;
     movies_string(g);
     printf("moves : %d\n", g->moves);
-    draw_map(g);
+    g->needs_redraw = 1;
+    //draw_map(g);
     return (0);
 }

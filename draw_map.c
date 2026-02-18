@@ -5,7 +5,7 @@ void draw_map(t_game *g)
 {
     int x = 0;
     int y = 0;
-    mlx_clear_window(g->mlx, g->win);
+    //mlx_clear_window(g->mlx, g->win);
     for (int i = 0; g->map[i]; i++)
     {
         if (g->map[i] == '\n')

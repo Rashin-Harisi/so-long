@@ -40,7 +40,7 @@ int main(void)
         free(g.map);
         return (ft_printf("Error\n"));
     }
-    ft_printf("Map has equal lemgth\n");
+    ft_printf("Map has equal length\n");
     if (is_map_rounded_closed(g.map , g.map_h) == 0)
     {
         free(g.map);

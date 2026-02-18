@@ -10,7 +10,8 @@ int animate_player (void *param)
     if (counter % 50 == 0)
     {
         game->current_frame = (game->current_frame + 1) % PLAYER_FRAMES;
-        draw_map(game);
+        game->needs_redraw = 1;
+        //draw_map(game);
     }
     return 0;
 }
