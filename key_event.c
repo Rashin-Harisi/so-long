@@ -7,7 +7,7 @@ int handle_key(int keycode, void *params)
     int new_x = g->player_x;
     int new_y = g->player_y;
     int index;
-    if (ft_strcmp(g->state,"RUNING") != 0)
+    if (ft_strncmp(g->state,"RUNING",ft_strlen("RUNING")) != 0)
         return (0);
     if (keycode == 65307) //ESC keycode
         return (handle_close(g), 0);
@@ -36,8 +36,9 @@ int handle_key(int keycode, void *params)
     {
             g->state = "WIN";
             g->end_time = time_now();
-            g->last_win = mlx_new_window(g->mlx, 700, 700 , "end");
-            if (!g->last_win) return (free(g->map), 1);
+            if (!g->last_win)
+                g->last_win = mlx_new_window(g->mlx, 300, 300 , "end");
+            return (0);
     }
     g->player_x = new_x;
     g->player_y = new_y;

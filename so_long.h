@@ -93,6 +93,6 @@ int check_neghbors_enemy(t_game *params, int x, int y);
 long time_now(void);
 int loop_master(void *params);
 void update_enemy_location(t_game *params, t_neighbor n[], int count);
-void draw_last_window(void *params);
+void draw_last_window(t_game *params);
 
 #endif

@@ -89,7 +89,7 @@ int game_loop(t_game *params)
     int old_x = params->enemy_x;
     int old_y = params->enemy_y;
     long now = time_now();
-    if (ft_strcmp(params->state, "RUNING") != 0)
+    if (ft_strncmp(params->state, "RUNING", ft_strlen("RUNING")) != 0)
         return (0);
     if (now - params->last_enemy_ms < 500)
         return (0);
@@ -138,10 +138,10 @@ int game_loop(t_game *params)
     {
         params->state = "LOSE";
         params->end_time = time_now();
-        params->last_win = mlx_new_window(params->mlx, 700, 700 , "end");
-        if (!params->last_win) return (free(params->map), 1);
+        if (!params->last_win)
+            params->last_win = mlx_new_window(params->mlx, 300, 300 , "end");
+        return (0);
     }
-    draw_map(params);
     params->last_enemy_ms = now;
     // printf("enemy %d %d\n", params->enemy_x, params->enemy_y);
     return (0);

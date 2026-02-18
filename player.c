@@ -3,7 +3,7 @@
 int animate_player (void *param)
 {
     t_game *game = (t_game *)param;
-    if (game->state != "RUNNING")
+    if (ft_strncmp(game->state, "RUNING", ft_strlen("RUNING")) != 0)
         return (0);
     static int counter = 0;
     counter ++;
