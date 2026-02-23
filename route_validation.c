@@ -35,11 +35,31 @@ int check_neghbors(t_game *params, char *map, int x, int y)
         map[index] = 'Q';
     return (1);
 }
+static int rout_fail(t_queue *q, char *map)
+{
+    if (q)
+        queue_free(q);
+    free(map);
+    return (0);
+}
+
+static int push_neighbor(t_game *params, char * map, int x, int y)
+{
+    if (check_neghbors(params, map, x + 1, y) && !queue_push(params->queue, x + 1, y))
+        return (0);
+    if (check_neghbors(params, map, x, y + 1) && !queue_push(params->queue, x, y + 1))
+        return (0);
+    if (check_neghbors(params, map, x - 1, y) && !queue_push(params->queue, x - 1, y))
+        return (0);
+    if (check_neghbors(params, map, x, y - 1) && !queue_push(params->queue, x, y - 1))
+        return (0);
+    return (1);
+}
+
 //FIFO = FIRST IN FIRST OUT
 int valid_route(t_game *params)
 {
     char *map;
-    t_queue *q;
     int x;
     int y;
 
@@ -50,38 +70,21 @@ int valid_route(t_game *params)
     map = ft_strdup(params->map);
     if (!map)
         return (0);
-    q = queue_create(params->map_w * params->map_h);
-    if (!q)
-    {
-        free(map);
-        return (0);
-    }
-    if (!queue_push(q, params->player_x, params->player_y))
-    {
-        queue_free(q);
-        free(map);
-        return (0);
-    }
-    while(queue_pop(q,&x, &y))
+    params->queue = queue_create(params->map_w * params->map_h);
+    if (!params->queue)
+        return (rout_fail(NULL, map));
+    if (!queue_push(params->queue, params->player_x, params->player_y))
+        return (rout_fail(params->queue, map));
+    while(queue_pop(params->queue,&x, &y))
     {
         if (x < 0 || y < 0 || x >= params->map_w || y >= params->map_h)
             continue;
         if (!visit_tile(map, params ,x , y))
             continue ;
-        if (check_neghbors(params, map, x + 1, y) && !queue_push(q, x + 1, y))
-            return (queue_free(q), free(map), 0);
-        if (check_neghbors(params, map, x, y + 1) && !queue_push(q, x, y + 1))
-            return (queue_free(q), free(map), 0);
-        if (check_neghbors(params, map, x - 1, y) && !queue_push(q, x - 1, y))
-            return (queue_free(q), free(map), 0);
-        if (check_neghbors(params, map, x, y - 1) && !queue_push(q, x, y - 1))
-            return (queue_free(q), free(map), 0);
+        if(!push_neighbor(params, map, x, y))
+            return(rout_fail(params->queue, map));
     }
-    queue_free(q);
+    queue_free(params->queue);
     free(map);
-    if (params->reach_c != params->collectibles)
-        return (0);
-    if (params->reach_e == 0)
-        return (0);
-    return (1);    
+    return (params->reach_c == params->collectibles && params->reach_e);    
 }

@@ -1,19 +1,44 @@
 #ifndef SO_LONG
 #define SO_LONG
 
-#include "mlx.h"
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "libft/libft.h"
-#include <sys/time.h>
+# include "mlx.h"
+# include <fcntl.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include "libft/libft.h"
+# include <sys/time.h>
 # include <limits.h>
 # include <math.h>
 # include <time.h>
 
-#define TILE 32
-#define PLAYER_FRAMES 4
+# define TILE 32
+# define PLAYER_FRAMES 4
+
+typedef struct s_neighbor
+{
+    int x;
+    int y;
+} t_neighbor;
+
+typedef struct s_enemy
+{
+     t_neighbor n[4];
+    int count;
+    int num;
+    int old_x;
+    int old_y;
+    long now ;
+} t_enemy;
+
+typedef struct s_queue
+{
+    int *x;
+    int *y;
+    int head;
+    int tail;
+    int size;
+} t_queue;
 
 typedef struct s_game
 {
@@ -50,22 +75,12 @@ typedef struct s_game
     void *loser;
     void *last_win;
     int needs_redraw;
+    t_enemy enemy_var;
+    t_queue *queue;
 } t_game;
 
-typedef struct s_queue
-{
-    int *x;
-    int *y;
-    int head;
-    int tail;
-    int size;
-} t_queue;
 
-typedef struct s_neighbor
-{
-    int x;
-    int y;
-} t_neighbor;
+
 
 void draw_map(t_game *g);
 int handle_key(int keycode, void *params);
@@ -95,5 +110,7 @@ long time_now(void);
 int loop_master(void *params);
 void update_enemy_location(t_game *params, t_neighbor n[], int count);
 void draw_last_window(t_game *params);
+int draw_player(t_game *g, int *w, int *h);
+int fail_validation(t_game *g);
 
 #endif

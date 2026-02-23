@@ -1,20 +1,9 @@
 #include "so_long.h"
 
-
-void draw_map(t_game *g)
+static void draw_tile(t_game *g , int i, int x, int y)
 {
-    int x = 0;
-    int y = 0;
-    //mlx_clear_window(g->mlx, g->win);
-    for (int i = 0; g->map[i]; i++)
-    {
-        if (g->map[i] == '\n')
-        {
-            y++;
-            x = 0;
-            continue;
-        }
-        if (g->map[i] == 'E' && g->collectibles == 0)
+    
+    if (g->map[i] == 'E' && g->collectibles == 0)
             mlx_put_image_to_window(g->mlx, g->win, g->floor_exit, x * TILE, y * TILE);
         else
             mlx_put_image_to_window(g->mlx, g->win, g->floor, x * TILE, y * TILE);
@@ -28,7 +17,25 @@ void draw_map(t_game *g)
         }
         if (g->map[i] == 'C')
             mlx_put_image_to_window(g->mlx, g->win, g->collections, x * TILE , y *TILE);
+}
+
+void draw_map(t_game *g)
+{
+    int x = 0;
+    int y = 0;
+    int i = 0;
+    while (g->map[i])
+    {
+        if (g->map[i] == '\n')
+        {
+            y++;
+            x = 0;
+            i++;
+            continue;
+        }
+        draw_tile(g, i, x , y);
         x++;
+        i++;
     }
     mlx_put_image_to_window(g->mlx, g->win, g->player_frames[g->current_frame], g->player_x * TILE, g->player_y * TILE);
     mlx_put_image_to_window(g->mlx, g->win, g->enemy , g->enemy_x * TILE, g->enemy_y * TILE);

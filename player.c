@@ -38,3 +38,20 @@ void find_player_position(t_game *g)
         x++;
     }
 }
+
+int draw_player(t_game *g, int *w, int *h)
+{
+    g->player_frames[0] = mlx_xpm_file_to_image(g->mlx,"texture/player.xpm", w, h);
+    if (!g->player_frames[0] || *w != TILE || *h != TILE) 
+        return (0);
+    g->player_frames[1] = mlx_xpm_file_to_image(g->mlx,"texture/player_1.xpm", w, h);
+    if (!g->player_frames[1] || *w != TILE || *h != TILE) 
+        return (0);
+    g->player_frames[2] = mlx_xpm_file_to_image(g->mlx,"texture/player_2.xpm", w, h);
+    if (!g->player_frames[2] || *w != TILE || *h != TILE) 
+        return (0);
+    g->player_frames[3] = mlx_xpm_file_to_image(g->mlx,"texture/player_3.xpm", w, h);
+    if (!g->player_frames[3] || *w != TILE || *h != TILE) 
+        return (0);
+    return (1);
+}

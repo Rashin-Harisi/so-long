@@ -86,9 +86,7 @@ int valid_characters(t_game *g)
     int counts[3]; //count_p, count_e, count_c
 
     valid= "01CEPX\n";
-    counts[0] = 0;
-    counts[1] = 0;
-    counts[2] = 0;
+    ft_bzero(counts, sizeof(counts));
     i = 0;
     if (!g || !g->map)
         return (0);

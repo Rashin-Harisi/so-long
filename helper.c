@@ -86,3 +86,11 @@ int loop_master(void *params)
     }
     return (0);
 }
+
+int fail_validation(t_game *g)
+{
+    free(g->map);
+    g->map = NULL;
+    ft_printf("Error\n");
+    return (0);
+}
