@@ -15,6 +15,7 @@ MANDATORY_SRC := main.c \
 				fool_fill.c \
 				route_validation.c \
 				enemy.c \
+				enemy_helper.c \
 				draw_last_window.c 
 
 # put your bonus .c files inside bonus/ here (examples)
