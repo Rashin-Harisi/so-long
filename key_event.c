@@ -47,19 +47,21 @@ static int	lose_situation(t_game *g)
 	return (0);
 }
 
-static int	check_movement(t_game *g, int *index, int new_x, int new_y)
+static int	check_movement(t_game *g, int new_x, int new_y)
 {
+	int	index;
+
 	if (new_x == g->player_x && new_y == g->player_y)
 		return (0);
 	if (new_x < 0 || new_y < 0 || new_x >= g->map_w || new_y >= g->map_h)
 		return (0);
-	*index = new_y * (g->map_w + 1) + new_x;
-	if (g->map[*index] == '1')
+	index = new_y * (g->map_w + 1) + new_x;
+	if (g->map[index] == '1')
 		return (0);
-	if (g->map[*index] == 'C')
+	if (g->map[index] == 'C')
 	{
 		g->collectibles--;
-		g->map[*index] = '0';
+		g->map[index] = '0';
 	}
 	return (1);
 }
@@ -69,17 +71,15 @@ int	handle_key(int keycode, void *params)
 	t_game	*g;
 	int		new_x;
 	int		new_y;
-	int		index;
 
 	g = (t_game *)params;
 	new_x = g->player_x;
 	new_y = g->player_y;
-	index = 0;
 	if (ft_strncmp(g->state, "RUNING", ft_strlen("RUNING")) != 0)
 		return (0);
 	if (!key_check(keycode, &new_x, &new_y, g))
 		return (0);
-	if (!check_movement(g, &index, new_x, new_y))
+	if (!check_movement(g, new_x, new_y))
 		return (0);
 	if (new_x == g->exit_x && new_y == g->exit_y && g->collectibles == 0)
 		return (win_situation(g));

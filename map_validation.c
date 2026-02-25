@@ -32,34 +32,31 @@ int	fail_handel(char **lines)
 
 int	is_length_equal(char *map)
 {
-	char	**lines;
-	int		length_first_line;
-	int		length_other;
+	int		length;
+	int		current;
 	int		i;
 
 	if (!map || map[0] == '\n' || map[0] == '\0')
 		return (0);
-	i = 0;
-	while (map[i])
+	length = 0;
+	while (map[length] && map[length] != '\n')
+		length++;
+	if (length == 0)
+		return (0);
+	current = 0;
+	i = -1;
+	while (map[++i])
 	{
-		if (map[i] == '\n' && map [i + 1] == '\n')
-			return (0);
-		i++;
+		if (map[i] == '\n')
+		{
+			if (current == 0 || current != length)
+				return (0);
+			current = 0;
+		}
+		else
+			current++;
 	}
-	lines = ft_split(map, '\n');
-	if (!lines || !lines[0])
-		return (fail_handel(lines));
-	length_first_line = ft_strlen(lines[0]);
-	i = 1;
-	while (lines[i])
-	{
-		length_other = ft_strlen(lines[i]);
-		if (length_first_line != length_other)
-			return (fail_handel(lines));
-		i++;
-	}
-	free_array(lines);
-	return (1);
+	return (current == length);
 }
 
 int	is_map_rounded_closed(char *map, int map_h)

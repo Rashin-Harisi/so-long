@@ -120,5 +120,6 @@ void	update_enemy_location(t_game *params, t_neighbor n[], int count);
 void	draw_last_window(t_game *params);
 int		draw_player(t_game *g, int *w, int *h);
 int		fail_validation(t_game *g);
+int		create_window(t_game *g);
 
 #endif

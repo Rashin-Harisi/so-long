@@ -40,17 +40,6 @@ void	find_enemy_position(t_game *g)
 	}
 }
 
-long	time_now(void)
-{
-	struct timeval	tv;
-	long			now;
-
-	now = 0;
-	gettimeofday(&tv, NULL);
-	now = tv.tv_sec * 1000L + tv.tv_usec / 1000L;
-	return (now);
-}
-
 int	check_neghbors_enemy(t_game *params, int x, int y)
 {
 	int	index;
@@ -67,37 +56,36 @@ int	check_neghbors_enemy(t_game *params, int x, int y)
 	return (1);
 }
 
-void	update_enemy_location(t_game *params, t_neighbor n[], int count)
+static void	enemy_movement_check(t_game *g)
+{
+	g->enemy_x = g->prev_enemy_x;
+	g->enemy_y = g->prev_enemy_y;
+}
+
+void	update_enemy_location(t_game *g, t_neighbor n[], int count)
 {
 	int	i;
 	int	new_x;
 	int	new_y;
 	int	min;
 
-	i = 0;
-	new_x = params->enemy_x;
-	new_y = params->enemy_y;
+	i = -1;
+	new_x = g->enemy_x;
+	new_y = g->enemy_y;
 	min = INT_MAX;
 	if (count == 0)
+		return (enemy_movement_check(g));
+	while (++i < count)
 	{
-		params->enemy_x = params->prev_enemy_x;
-		params->enemy_y = params->prev_enemy_y;
-		return ;
-	}
-	while (i < count)
-	{
-		if ((abs(n[i].x - params->player_x) + abs(n[i].y - params->player_y))
-			< min)
+		if ((abs(n[i].x - g->player_x) + abs(n[i].y - g->player_y)) < min)
 		{
-			min = (abs(n[i].x - params->player_x)
-					+ abs(n[i].y - params->player_y));
+			min = (abs(n[i].x - g->player_x) + abs(n[i].y - g->player_y));
 			new_x = n[i].x;
 			new_y = n[i].y;
 		}
-		i++;
 	}
-	params->enemy_x = new_x;
-	params->enemy_y = new_y;
+	g->enemy_x = new_x;
+	g->enemy_y = new_y;
 }
 
 int	game_over(t_game *params)

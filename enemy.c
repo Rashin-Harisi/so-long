@@ -11,25 +11,25 @@
 /* ************************************************************************** */
 #include "so_long.h"
 
-static void	add_neighboar(t_game *params, int x, int y)
+static void add_neighboar(t_game *params, int x, int y)
 {
 	if (params->enemy_var.count >= 4)
-		return ;
+		return;
 	if (!check_neghbors_enemy(params, x, y))
-		return ;
+		return;
 	if (params->prev_enemy_x == x && params->prev_enemy_y == y)
-		return ;
+		return;
 	params->enemy_var.n[params->enemy_var.count].x = x;
 	params->enemy_var.n[params->enemy_var.count].y = y;
 	params->enemy_var.count++;
 }
 
-static void	move_enemy(t_game *g)
+static void move_enemy(t_game *g)
 {
-	int	index;
+	int index;
 
 	if (g->enemy_var.count == 0)
-		return ;
+		return;
 	if (g->enemy_var.num < 70)
 		update_enemy_location(g, g->enemy_var.n, g->enemy_var.count);
 	else
@@ -40,7 +40,7 @@ static void	move_enemy(t_game *g)
 	}
 }
 
-static void	initial_values(t_game *params)
+static void initial_values(t_game *params)
 {
 	params->enemy_var.count = 0;
 	params->enemy_var.num = rand() % 100;
@@ -49,9 +49,17 @@ static void	initial_values(t_game *params)
 	params->enemy_var.now = time_now();
 }
 
-int	game_loop(t_game *params)
+static void add_neighboars(t_game *params)
 {
-	long	now;
+	add_neighboar(params, params->enemy_x + 1, params->enemy_y);
+	add_neighboar(params, params->enemy_x - 1, params->enemy_y);
+	add_neighboar(params, params->enemy_x, params->enemy_y + 1);
+	add_neighboar(params, params->enemy_x, params->enemy_y - 1);
+}
+
+int game_loop(t_game *params)
+{
+	long now;
 
 	now = time_now();
 	if (ft_strncmp(params->state, "RUNING", ft_strlen("RUNING")) != 0)
@@ -59,10 +67,7 @@ int	game_loop(t_game *params)
 	if (now - params->last_enemy_ms < 500)
 		return (0);
 	initial_values(params);
-	add_neighboar(params, params->enemy_x + 1, params->enemy_y);
-	add_neighboar(params, params->enemy_x - 1, params->enemy_y);
-	add_neighboar(params, params->enemy_x, params->enemy_y + 1);
-	add_neighboar(params, params->enemy_x, params->enemy_y - 1);
+	add_neighboars(params);
 	move_enemy(params);
 	params->prev_enemy_x = params->enemy_var.old_x;
 	params->prev_enemy_y = params->enemy_var.old_y;

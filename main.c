@@ -22,10 +22,8 @@ static int	draw_images(t_game *g, int *w, int *h)
 	if (!draw_player(g, w, h))
 		return (0);
 	g->wall = mlx_xpm_file_to_image(g->mlx, "texture/wall.xpm", w, h);
-	g->green_wall = mlx_xpm_file_to_image(g->mlx,
-			"texture/green_wall.xpm", w, h);
-	g->collections = mlx_xpm_file_to_image(g->mlx,
-			"texture/collections.xpm", w, h);
+	g->green_wall = mlx_xpm_file_to_image(g->mlx, "texture/gwall.xpm", w, h);
+	g->collections = mlx_xpm_file_to_image(g->mlx, "texture/collect.xpm", w, h);
 	g->floor = mlx_xpm_file_to_image(g->mlx, "texture/floor.xpm", w, h);
 	g->floor_exit = mlx_xpm_file_to_image(g->mlx,
 			"texture/exit_floor.xpm", w, h);
@@ -57,13 +55,9 @@ static int	initial_setup(t_game *g)
 static int	reading_map(t_game *g)
 {
 	int	fd;
-	int	width;
-	int	height;
 	int	i;
 
 	i = -1;
-	width = 0;
-	height = 0;
 	fd = open("map.ber", O_RDONLY);
 	if (fd < 0)
 		return (0);
@@ -71,16 +65,16 @@ static int	reading_map(t_game *g)
 	close(fd);
 	if (!g->map)
 		return (0);
-	while (g->map[width] && g->map[width] != '\n')
-		width++;
+	g->map_w = 0;
+	while (g->map[g->map_w] && g->map[g->map_w] != '\n')
+		g->map_w++;
+	g->map_h = 0;
 	while (g->map[++i])
 	{
 		if (g->map[i] == '\n')
-			height++;
+			g->map_h++;
 	}
-	height += 1;
-	g->map_w = width;
-	g->map_h = height;
+	g->map_h += 1;
 	return (1);
 }
 
@@ -112,10 +106,8 @@ int	main(void)
 		return (1);
 	if (!map_validation(&g))
 		return (1);
-	g.win = mlx_new_window(g.mlx, g.map_w * TILE,
-			g.map_h * TILE, "so_long map test");
-	if (!g.win)
-		return (free(g.map), 1);
+	if (!create_window(&g))
+		return (1);
 	if (!draw_images(&g, &w, &h))
 	{
 		free(g.map);

@@ -16,28 +16,26 @@ char	*read_all(int fd)
 	char	buf[4096];
 	int		r;
 	char	*out;
-	int		out_len;
-	int		i;
-	char	*new_out;
+	int		len;
+	char	*temp;
 
 	out = NULL;
-	out_len = 0;
-	i = -1;
-	r = read(fd, buf, sizeof(buf));
-	while (r > 0)
+	len = 0;
+	while (1)
 	{
-		new_out = malloc(out_len + r + 1);
-		if (!new_out)
+		r = read(fd, buf, sizeof(buf));
+		if (r <= 0)
+			break ;
+		temp = malloc(len + r + 1);
+		if (!temp)
 			return (free(out), NULL);
-		while (++i < out_len)
-			new_out[i] = out[i];
-		i = -1;
-		while (++i < r)
-			new_out[out_len + i] = buf[i];
-		new_out[out_len + r] = '\0';
+		while (out)
+			ft_memcpy(temp, out, len);
+		ft_memcpy(temp + len, buf, r);
+		temp[len + r] = '\0';
 		free(out);
-		out = new_out;
-		out_len += r;
+		out = temp;
+		len += r;
 	}
 	return (out);
 }

@@ -44,7 +44,7 @@ void	find_player_position(t_game *g)
 		{
 			y++;
 			x = 0;
-			i = 0;
+			i++;
 			continue ;
 		}
 		if (g->map[i] == 'P')
