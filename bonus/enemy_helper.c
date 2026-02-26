@@ -9,7 +9,7 @@
 /*	 Updated: 2026/02/24 12:30:57 by rabdolho		  ###	########.fr		  */
 /*																			  */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "../so_long.h"
 
 void	find_enemy_position(t_game *g)
 {

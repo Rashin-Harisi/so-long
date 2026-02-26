@@ -9,7 +9,7 @@
 /*   Updated: 2026/02/24 12:43:52 by rabdolho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "../so_long.h"
 
 char	*read_all(int fd)
 {
@@ -72,7 +72,9 @@ int	handle_close(void *params)
 	mlx_destroy_image(g->mlx, g->player_frames[1]);
 	mlx_destroy_image(g->mlx, g->player_frames[2]);
 	mlx_destroy_image(g->mlx, g->player_frames[3]);
+	mlx_destroy_image(g->mlx, g->enemy);
 	mlx_destroy_image(g->mlx, g->winer);
+	mlx_destroy_image(g->mlx, g->loser);
 	mlx_destroy_window(g->mlx, g->win);
 	if (g->last_win)
 		mlx_destroy_window(g->mlx, g->last_win);
@@ -91,6 +93,7 @@ int	loop_master(void *params)
 	if (ft_strncmp(g->state, "RUNING", ft_strlen("RUNING")) == 0)
 	{
 		animate_player(g);
+		game_loop(g);
 		if (g->needs_redraw)
 		{
 			draw_map(g);

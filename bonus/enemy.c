@@ -9,7 +9,7 @@
 /*	 Updated: 2026/02/24 12:21:52 by rabdolho		  ###	########.fr		  */
 /*																			  */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "../so_long.h"
 
 static void add_neighboar(t_game *params, int x, int y)
 {

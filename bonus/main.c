@@ -9,11 +9,13 @@
 /*   Updated: 2026/02/24 12:56:20 by rabdolho         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "../so_long.h"
 
 static int	draw_images(t_game *g, int *w, int *h)
 {
+	int	w_lose;
 	int	w_win;
+	int	h_lose;
 	int	h_win;
 
 	g->map[g->player_y * (g->map_w + 1) + g->player_x] = '0';
@@ -25,11 +27,14 @@ static int	draw_images(t_game *g, int *w, int *h)
 	g->floor = mlx_xpm_file_to_image(g->mlx, "texture/floor.xpm", w, h);
 	g->floor_exit = mlx_xpm_file_to_image(g->mlx,
 			"texture/exit_floor.xpm", w, h);
+	g->enemy = mlx_xpm_file_to_image(g->mlx, "texture/enemy.xpm", w, h);
 	g->winer = mlx_xpm_file_to_image(g->mlx, "texture/win.xpm", &w_win, &h_win);
+	g->loser = mlx_xpm_file_to_image(g->mlx,
+			"texture/lose.xpm", &w_lose, &h_lose);
 	if (!g->wall || !g->green_wall || !g->floor || !g->player_frames[0]
 		|| !g->player_frames[1] || !g->player_frames[2] || !g->player_frames[3]
-		|| !g->collections || !g->floor_exit
-		|| !g->winer)
+		|| !g->collections || !g->floor_exit || !g->enemy
+		|| !g->winer || !g->loser)
 		return (0);
 	return (1);
 }
@@ -53,7 +58,7 @@ static int	reading_map(t_game *g)
 	int	i;
 
 	i = -1;
-	fd = open("map.ber", O_RDONLY);
+	fd = open("bonus/map.ber", O_RDONLY);
 	if (fd < 0)
 		return (0);
 	g->map = read_all(fd);
@@ -83,6 +88,7 @@ int	map_validation(t_game *g)
 		return (fail_validation(g, "Map has not valid characters."));
 	find_exit_point(g);
 	find_player_position(g);
+	find_enemy_position(g);
 	if (valid_route(g) == 0)
 		return (fail_validation(g, "Map has not valid routs for all collections."));
 	return (1);
@@ -96,14 +102,16 @@ int	main(void)
 
 	if (!initial_setup(&g))
 		return (1);
-	if (!reading_map(&g) || !map_validation(&g) || !create_window(&g))
-	{
-		handle_close(&g);
+	if (!reading_map(&g))
 		return (1);
-	}
+	if (!map_validation(&g))
+		return (1);
+	if (!create_window(&g))
+		return (1);
 	if (!draw_images(&g, &w, &h))
 	{
-		handle_close(&g);
+		free(g.map);
+		free(g.moves_str);
 		return (1);
 	}
 	mlx_loop_hook(g.mlx, loop_master, &g);
@@ -114,4 +122,3 @@ int	main(void)
 	free(g.moves_str);
 	return (0);
 }
-

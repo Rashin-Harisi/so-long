@@ -19,7 +19,6 @@ int	animate_player(void *param)
 	game = (t_game *)param;
 	if (ft_strncmp(game->state, "RUNING", ft_strlen("RUNING")) != 0)
 		return (0);
-	counter = 0;
 	counter++;
 	if (counter % 50 == 0)
 	{

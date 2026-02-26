@@ -9,7 +9,7 @@
 /*	 Updated: 2026/02/24 12:17:06 by rabdolho		  ###	########.fr		  */
 /*																			  */
 /* ************************************************************************** */
-#include "so_long.h"
+#include "../so_long.h"
 
 static void	draw_tile(t_game *g, int i, int x, int y)
 {
@@ -56,4 +56,7 @@ void	draw_map(t_game *g)
 	}
 	mlx_put_image_to_window(g->mlx, g->win, g->player_frames[g->current_frame],
 		g->player_x * TILE, g->player_y * TILE);
+	mlx_put_image_to_window(g->mlx, g->win, g->enemy, g->enemy_x * TILE,
+		g->enemy_y * TILE);
+	mlx_string_put(g->mlx, g->win, 10, 20, 0x000000, g->moves_str);
 }
