@@ -34,7 +34,7 @@ static int	win_situation(t_game *g)
 	g->state = "WIN";
 	g->end_time = time_now();
 	if (!g->last_win)
-		g->last_win = mlx_new_window(g->mlx, 300, 300, "end");
+		g->last_win = mlx_new_window(g->mlx, 350, 350, "end");
 	return (0);
 }
 
@@ -43,7 +43,7 @@ static int	lose_situation(t_game *g)
 	g->state = "LOSE";
 	g->end_time = time_now();
 	if (!g->last_win)
-		g->last_win = mlx_new_window(g->mlx, 300, 300, "end");
+		g->last_win = mlx_new_window(g->mlx, 350, 350, "end");
 	return (0);
 }
 
