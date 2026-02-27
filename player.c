@@ -14,17 +14,18 @@
 int	animate_player(void *param)
 {
 	t_game		*game;
-	static int	counter;
+	static long	last;
+	long		now;
 
 	game = (t_game *)param;
-	if (ft_strncmp(game->state, "RUNING", ft_strlen("RUNING")) != 0)
+	if (ft_strncmp(game->state, "RUNING", 6) != 0)
 		return (0);
-	counter++;
-	if (counter % 50 == 0)
-	{
-		game->current_frame = (game->current_frame + 1) % PLAYER_FRAMES;
-		game->needs_redraw = 1;
-	}
+	now = time_now();
+	if (now - last < 120)
+		return (0);
+	last = now;
+	game->current_frame = (game->current_frame + 1) % PLAYER_FRAMES;
+	game->needs_redraw = 1;
 	return (0);
 }
 
