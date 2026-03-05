@@ -52,13 +52,13 @@ static int	initial_setup(t_game *g)
 	return (1);
 }
 
-static int	reading_map(t_game *g)
+static int	reading_map(t_game *g, char *filename)
 {
 	int	fd;
 	int	i;
 
 	i = -1;
-	fd = open("bonus/map.ber", O_RDONLY);
+	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return (0);
 	g->map = read_all(fd);
@@ -94,24 +94,32 @@ int	map_validation(t_game *g)
 	return (1);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	int		w;
 	int		h;
 	t_game	g;
 
+	if (argc != 2)
+	{
+		ft_printf("Error\nThe correct form is ./so_long map.ber\n");
+		return (1);
+	}
+	if (!is_ber_map(argv[1]))
+	{
+		ft_printf("Error\nThe map formap is invalid\n");
+		return (1);
+	}
 	if (!initial_setup(&g))
 		return (1);
-	if (!reading_map(&g))
+	if (!reading_map(&g, argv[1]) || !map_validation(&g) || !create_window(&g))
+	{
+		handle_close(&g);
 		return (1);
-	if (!map_validation(&g))
-		return (1);
-	if (!create_window(&g))
-		return (1);
+	}
 	if (!draw_images(&g, &w, &h))
 	{
-		free(g.map);
-		free(g.moves_str);
+		handle_close(&g);
 		return (1);
 	}
 	mlx_loop_hook(g.mlx, loop_master, &g);

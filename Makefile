@@ -34,14 +34,26 @@ LIBFT_DIR := libft
 LIBFT_A   := $(LIBFT_DIR)/libft.a
 
 # System-installed MiniLibX (Linux)
-MLX_FLAGS := -lmlx -lXext -lX11 -lm
+#MLX_FLAGS := -lmlx -lXext -lX11 -lm
+
+# -------- MiniLibX (Linux) --------
+MLX_DIR     := mlx_linux
+MLX_A       := $(MLX_DIR)/libmlx.a
+MLX_FLAGS   := -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+
+# Includes
+INC         := -I. -I$(LIBFT_DIR) -I$(MLX_DIR)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT_A) $(MANDATORY_OBJ) $(COMMON_OBJ)
+$(NAME): $(LIBFT_A) $(MLX_A) $(MANDATORY_OBJ) $(COMMON_OBJ)
 	@rm -f $(BONUS_NAME)
 	$(CC) $(CFLAGS) $(MANDATORY_OBJ) $(COMMON_OBJ) -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -o $(NAME)
 	@echo "Mandatory part is build."
+
+#MINILIBX(LINUX)
+$(MLX_A):
+	$(MAKE) -C $(MLX_DIR)
 
 bonus : $(BONUS_NAME)
 
@@ -55,7 +67,7 @@ $(LIBFT_A):
 	$(MAKE) -C $(LIBFT_DIR)
 
 %.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 clean:
 	rm -f $(MANDATORY_OBJ) $(BONUS_OBJ) $(COMMON_OBJ) $(BONUS_NAME)

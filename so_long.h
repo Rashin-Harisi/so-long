@@ -121,5 +121,6 @@ void	draw_last_window(t_game *params);
 int		draw_player(t_game *g, int *w, int *h);
 int		fail_validation(t_game *g, char *text);
 int		create_window(t_game *g);
+int		is_ber_map(char *str);
 
 #endif

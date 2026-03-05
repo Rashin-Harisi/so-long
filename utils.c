@@ -72,3 +72,15 @@ int	check_neghbors(t_game *params, char *map, int x, int y)
 		map[index] = 'Q';
 	return (1);
 }
+
+int	is_ber_map(char *str)
+{
+	int len;
+
+	len = ft_strlen(str);
+	if (len < 5)
+		return (0);
+	if (ft_strncmp((str + (len - 4)), ".ber", 4) == 0)
+		return (1);
+	return (0);
+}
