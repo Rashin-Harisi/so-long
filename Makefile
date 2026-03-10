@@ -10,7 +10,8 @@ COMMON_SRC := key_event.c \
 				fool_fill.c \
 				route_validation.c \
 				draw_last_window.c \
-				utils.c
+				utils.c \
+				utils_second.c \
 
 MANDATORY_SRC := main.c \
 				helper.c \

@@ -60,27 +60,18 @@ int	handle_close(void *params)
 {
 	t_game	*g;
 
-	g = (t_game *) params;
-	free(g->moves_str);
-	g->moves_str = NULL;
-	mlx_destroy_image(g->mlx, g->floor);
-	mlx_destroy_image(g->mlx, g->floor_exit);
-	mlx_destroy_image(g->mlx, g->wall);
-	mlx_destroy_image(g->mlx, g->green_wall);
-	mlx_destroy_image(g->mlx, g->collections);
-	mlx_destroy_image(g->mlx, g->player_frames[0]);
-	mlx_destroy_image(g->mlx, g->player_frames[1]);
-	mlx_destroy_image(g->mlx, g->player_frames[2]);
-	mlx_destroy_image(g->mlx, g->player_frames[3]);
-	mlx_destroy_image(g->mlx, g->winer);
-	mlx_destroy_window(g->mlx, g->win);
-	if (g->last_win)
-		mlx_destroy_window(g->mlx, g->last_win);
-	mlx_destroy_display(g->mlx);
-	free(g->map);
-	free(g->mlx);
-	exit(0);
-	return (0);
+	g = (t_game *)params;
+    if (g->moves_str)
+        free(g->moves_str);
+    if (g->map)
+        free(g->map);
+    if (g->mlx)
+    {
+        destroy_images(g);
+        destroy_windows(g);
+    }
+    exit(0);
+
 }
 
 int	loop_master(void *params)

@@ -49,6 +49,7 @@ static int	initial_setup(t_game *g)
 	if (!g->mlx)
 		return (0);
 	srand(time(NULL));
+	mlx_get_screen_size(g->mlx, &g->screan_w, &g->screan_h);
 	return (1);
 }
 
@@ -84,6 +85,8 @@ int	map_validation(t_game *g)
 		return (fail_validation(g ,"Map is not rectangular."));
 	if (is_map_rounded_closed(g->map, g->map_h) == 0)
 		return (fail_validation(g, "Map is not rounded with walls."));
+	if (g->map_w * TILE > g->screan_w || g->map_h * TILE > g->screan_h)
+		return (fail_validation(g, "Map's size is bigger than the screan."));
 	if (valid_characters(g) == 0)
 		return (fail_validation(g, "Map has not valid characters."));
 	find_exit_point(g);

@@ -56,6 +56,8 @@ typedef struct s_game
 	void	*mlx;
 	void	*win;
 	char	*map;
+	int		screan_w;
+	int		screan_h;
 	int		map_w;
 	int		map_h;
 	void	*wall;
@@ -122,5 +124,8 @@ int		draw_player(t_game *g, int *w, int *h);
 int		fail_validation(t_game *g, char *text);
 int		create_window(t_game *g);
 int		is_ber_map(char *str);
+int     check_arguments(int argc, char **argv);
+void    destroy_windows(t_game *g);
+void    destroy_images(t_game *g);
 
 #endif
