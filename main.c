@@ -119,6 +119,7 @@ int	main(int argc, char **argv)
 		handle_close(&g);
 		return (1);
 	}
+	ft_printf("width : %d, height : %d\n", g.screan_w , g.screan_h);
 	mlx_loop_hook(g.mlx, loop_master, &g);
 	mlx_key_hook(g.win, handle_key, &g);
 	mlx_hook(g.win, 17, 0, handle_close, &g);
