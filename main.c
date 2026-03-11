@@ -59,8 +59,8 @@ static int	reading_map(t_game *g, char *filename)
 		return (0);
 	g->map = read_all(fd);
 	close(fd);
-	if (!g->map)
-		return (0);
+	if (!g->map || g->map[0] == '\0' || g->map[0] == '\n')
+		return (fail_validation(g, "Map is empty or starts with new line!"));
 	g->map_w = 0;
 	while (g->map[g->map_w] && g->map[g->map_w] != '\n')
 		g->map_w++;

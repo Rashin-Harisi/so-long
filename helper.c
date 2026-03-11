@@ -71,7 +71,6 @@ int	handle_close(void *params)
         destroy_windows(g);
     }
     exit(0);
-
 }
 
 int	loop_master(void *params)
