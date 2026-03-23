@@ -114,7 +114,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	if (!initial_setup(&g))
-		return (1);
+		return (handle_close(&g), 1);
 	if (!reading_map(&g, argv[1]) || !map_validation(&g) || !create_window(&g))
 	{
 		handle_close(&g);
