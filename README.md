@@ -49,6 +49,12 @@ make
 # OR
 make bonus
 ```
+#### Run the Game
+```bash
+./so_long maps/map.ber
+# OR
+./so_long maps/map_bonus.ber
+```
 #### Cleanup
 To remove object files, run:
 ```bash
