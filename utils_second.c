@@ -48,6 +48,10 @@ void    destroy_images(t_game *g)
         mlx_destroy_image(g->mlx, g->player_frames[3]);
     if (g->winer)
         mlx_destroy_image(g->mlx, g->winer);
+    if (g->enemy)
+        mlx_destroy_image(g->mlx, g->enemy);
+    if (g->loser)
+        mlx_destroy_image(g->mlx, g->loser);
 }
 
 void    destroy_windows(t_game *g)
